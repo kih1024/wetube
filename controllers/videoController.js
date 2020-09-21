@@ -1,6 +1,6 @@
 export const home = (req, res) => res.render("home", { pageTitle: "Home" });
 export const search = (req, res) =>{
-    // query 안에 있는 term을 가져오고 싶을때, 이건 req.query.term 을 한것과 같음.
+    // query 안에 있는 term을 가져오고 싶을때, 이건 req.query.term 을 한것과 같음. es6에 나온 새로운 문법
     // 그리고 이것은 
     // const searchingBy = req.query.term 
     // 을 한거와 같다.
