@@ -21,6 +21,8 @@ const app = express();
 //     res.send("You are on my profile");
 // }
 app.set("view engine","pug");
+// express.static("디렉토리") : 디렉토리에서 파일을 찾아서 내보내주는 미들웨어
+app.use("/uploads", express.static("uploads"));
 app.use(cookieParser());
 app.use(bodyParser.json());// 사용자가 웹사이트로 전달하는 정보들을 검사하는 미들웨어
 app.use(bodyParser.urlencoded({ extended: true }));

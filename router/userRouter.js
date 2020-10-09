@@ -5,15 +5,6 @@ import { users, userDetail, editProfile, changePassword } from "../controllers/u
 const userRouter = express.Router();
 userRouter.get(routes.editProfile, editProfile);
 userRouter.get(routes.changePassword, changePassword);
-userRouter.get(routes.userDetail, userDetail);
-
-
-// function fa (){
-//     return true
-// };
-
-// fafa = () =>{
-//     return true
-// };
+userRouter.get(routes.userDetail(), userDetail);
 
 export default userRouter;

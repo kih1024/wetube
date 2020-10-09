@@ -1,5 +1,7 @@
+//- mixin은 pug의 함수 일종, 인자가 하나 필요하고 인자의 이름은 video라고 하고 기본적으로 빈 객체."반복되는" html을(혹은 어떤 의미덩어리를) 함수 형태로 만들 수 있도록 기능을 제공한다.
 mixin videoBlock(video = {})
     .videoBlock
-        video.videoBlock__thumbnail(src=video.videoFile, controls=true)
-        h4.videoBlock__title=video.title
-        h6.videoBlock__views=video.views
+        a(href=routes.videoDetail(video.id))
+            video.videoBlock__thumbnail(src=video.videoFile, controls=true)
+            h4.videoBlock__title=video.title
+            h6.videoBlock__views=video.views 
