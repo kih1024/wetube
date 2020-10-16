@@ -1,9 +1,11 @@
 import routes from "../routes";
 import Video from "../models/Video";
 
+// Home
+
 export const home = async (req, res) => {
   try {
-    const videos = await Video.find({});
+    const videos = await Video.find({}).sort({ _id: -1 });
     res.render("home", { pageTitle: "Home", videos });
   } catch (error) {
     console.log(error);
@@ -11,15 +13,29 @@ export const home = async (req, res) => {
   }
 };
 // query 안에 있는 term을 가져오고 싶을때, 이건 req.query.term 을 한것과 같음. es6에 나온 새로운 문법
-// 그리고 이것은 
-// const searchingBy = req.query.term 
+// 그리고 이것은
+// const searchingBy = req.query.term
 // 을 한거와 같다.
-export const search = (req, res) => {
+
+// Search
+
+export const search = async (req, res) => {
   const {
-    query: { term: searchingBy }
+    query: { term: searchingBy },
   } = req;
+  let videos = [];
+  try {
+    videos = await Video.find({
+      title: { $regex: searchingBy, $options: "i" },
+    });
+  } catch (error) {
+    console.log(error);
+  }
   res.render("search", { pageTitle: "Search", searchingBy, videos });
 };
+
+// Upload
+
 export const getUpload = (req, res) =>
   res.render("upload", { pageTitle: "Upload" });
 
@@ -34,13 +50,16 @@ export const postUpload = async (req, res) => {
   const newVideo = await Video.create({
     fileUrl: path,
     title,
-    description
+    description,
   });
   res.redirect(routes.videoDetail(newVideo.id));
 };
+
+// Video Detail
+
 export const videoDetail = async (req, res) => {
   const {
-    params: { id }
+    params: { id },
   } = req;
   try {
     const video = await Video.findById(id);
@@ -49,9 +68,12 @@ export const videoDetail = async (req, res) => {
     res.redirect(routes.home);
   }
 };
+
+// Edit Video
+
 export const getEditVideo = async (req, res) => {
   const {
-    params: { id }
+    params: { id },
   } = req;
   try {
     const video = await Video.findById(id);
@@ -64,7 +86,7 @@ export const getEditVideo = async (req, res) => {
 export const postEditVideo = async (req, res) => {
   const {
     params: { id },
-    body: { title, description }
+    body: { title, description },
   } = req;
   try {
     await Video.findOneAndUpdate({ _id: id }, { title, description });
@@ -73,12 +95,17 @@ export const postEditVideo = async (req, res) => {
     res.redirect(routes.home);
   }
 };
+
+// Delete Video
+
 export const deleteVideo = async (req, res) => {
   const {
-    params: { id }
+    params: { id },
   } = req;
   try {
     await Video.findOneAndRemove({ _id: id });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
   res.redirect(routes.home);
 };
