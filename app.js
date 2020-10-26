@@ -3,13 +3,23 @@ import morgan from "morgan"; //접속 상태 표시 미들웨어
 import helmet from "helmet"; // 보안 강화 미들웨어
 import cookieParser from "cookie-parser"; //쿠키에 정보를 저장하기 위해
 import bodyParser from "body-parser"; // body의 내용을 보기 위해
+import passport from "passport";
+import mongoose from "mongoose";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 import { localsMiddleware } from "./middlewares";
 import globalRouter from "./router/globalRouter";
 import userRouter from "./router/userRouter";
 import videoRouter from "./router/videoRouter";
 import routes from "./routes";
 // const express = require("express");
+
+import "./passport";
+
 const app = express();
+
+// 세션 -> mongoStore를 이용해서 -> db에 저장
+const CokieStore = MongoStore(session);
 
 // const handleHome = (req, res) => res.send("Hello from my ass");
 
@@ -28,7 +38,18 @@ app.use(cookieParser());
 app.use(bodyParser.json()); // 사용자가 웹사이트로 전달하는 정보들을 검사하는 미들웨어
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev")); // 미들웨어는 순서가 중요. 처리할 route 의 핸들러 앞에 둔다.이부분에 원하는 만큼 미들웨어를 둔다
+app.use(
+  session({
+    secret: process.env.COOKIE_SECRET,
+    resave: true,
+    saveUninitialized: false,
+    store: new CokieStore({ mongooseConnection: mongoose.connection }),
+  })
+);
 app.use(helmet());
+
+app.use(passport.initialize());
+app.use(passport.session());
 // app.get("/",handleHome);//이렇게 하면 응답이 없기때문에 무한로딩. request 를 해주면 respond도 해준다
 
 app.use(localsMiddleware);

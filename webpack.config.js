@@ -1,6 +1,7 @@
 const path = require("path");
 // const autoprefixer = require("autoprefixer");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { SourceMapDevToolPlugin } = require("webpack");
 
 const MODE = process.env.WEBPACK_ENV;
 const ENTRY_FILE = path.resolve(__dirname, "assets", "js", "main.js");
@@ -12,6 +13,11 @@ const config = {
   // 모듈을 발견할때마다 다음과 같은 룰을 적용한다
   module: {
     rules: [
+      {
+        test: /\.js$/,
+        enforce: "pre",
+        use: ["source-map-loader"],
+      },
       {
         test: /\.(js)$/,
         use: [
@@ -62,6 +68,9 @@ const config = {
     filename: "[name].js",
   },
   plugins: [
+    new SourceMapDevToolPlugin({
+      filename: "[file].map",
+    }),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
