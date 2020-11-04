@@ -6,28 +6,32 @@ import mongoose from "mongoose";
 const VideoSchema = new mongoose.Schema({
   fileUrl: {
     type: String,
-    required: "File URL is required"
+    required: "File URL is required",
   },
   title: {
     type: String,
-    required: "Tilte is required"
+    required: "Tilte is required",
   },
   description: String,
   views: {
     type: Number,
-    default: 0
+    default: 0,
   },
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   //   비디오와 코맨트를 연결 하는 방법2
   comments: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Comment"
-    }
-  ]
+      ref: "Comment",
+    },
+  ],
+  creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 // 위에 스키마를 디비에 적용하는것.
 const model = mongoose.model("Video", VideoSchema);
