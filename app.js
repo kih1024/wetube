@@ -18,7 +18,8 @@ import "./passport";
 
 const app = express();
 
-// 세션 -> mongoStore를 이용해서 -> db에 저장
+// 사용자 정보(쿠키정보)를 세션 -> mongoStore를 이용해서 -> db에 저장
+// 이 과정을 하는 이유는 서버가 재시작 됐을때 사용자가 로그인 상태를 유지하게 하기 위해서. 즉 서버가 재시작해도 세션을 그대로 유지(쿠키를 보존)하려고 한다.
 const CokieStore = MongoStore(session);
 
 // const handleHome = (req, res) => res.send("Hello from my ass");
