@@ -1,7 +1,11 @@
 import passport from "passport";
 import GithubStrategy from "passport-github";
+import FacebookStrategy from "passport-facebook";
 import User from "./models/User";
-import { githubLoginCallback } from "./controllers/userController";
+import {
+  githubLoginCallback,
+  facebookLoginCallback,
+} from "./controllers/userController";
 import routes from "./routes";
 
 // 로그인 하는 방식을 정한다. 이경우 passport-local-mongoose가 제공하는 strategy(username password)를 사용하려고 한다.
@@ -21,7 +25,20 @@ passport.use(
   )
 );
 
-// 아래 serializeUser 는 User 컬렉션(테이블)의 _id만 쿠키에 담든 역할을하고 세션에 _id를 저장한다.
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: process.env.FB_ID,
+      clientSecret: process.env.FB_SECRET,
+      callbackURL: `https://new-jellyfish-17.loca.lt${routes.facebookCallback}`,
+      profileFields: ["id", "displayName", "photos", "email"],
+      scope: ["public_profile", "email"],
+    },
+    facebookLoginCallback
+  )
+);
+
+// 아래 serializeUser 는 User 컬렉션(테이블)의 _id만 쿠키에 담는 역할을하고 세션에 _id를 저장한다.
 // deserializeUser 는 브라우저로부터 쿠키를 받아서 쿠키의 정보를 통해 _id를 확인해 어떤 사용자인지 확인한다.
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
