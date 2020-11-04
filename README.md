@@ -1,4 +1,4 @@
-# WeTube
+# YouTube Clone coding
 
 Cloning Youtube with js and node
 
