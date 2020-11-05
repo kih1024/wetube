@@ -37,13 +37,13 @@ Cloning Youtube with js and node
 ## 뷰 관련 라이브러리
 - node-sass : https://github.com/sass/node-sass
 - pug : https://www.npmjs.com/package/pug
-- postcss : https://github.com/postcss/postcss
   
 ## 웹팩 관련
 - webpack : https://github.com/webpack/webpack
 - source-map-loader : https://github.com/webpack-contrib/source-map-loader
 - babel-loader : https://github.com/babel/babel-loader
 - css-loader : https://github.com/webpack-contrib/css-loader
+- postcss : https://github.com/postcss/postcss
 - postcss-loader : https://github.com/webpack-contrib/postcss-loader
 - autoprefixer : https://github.com/postcss/autoprefixer
 - mini-css-extract-plugin : https://github.com/webpack-contrib/mini-css-extract-plugin
